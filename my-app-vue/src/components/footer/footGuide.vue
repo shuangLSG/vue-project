@@ -1,39 +1,47 @@
 <template>
   <div>
-    <group>
-      <cell is-link title="Simple" link="/component/tabbar-simple"></cell>
-      <cell is-link title="Switch icons" link="/component/tabbar-icon"></cell>
-    </group>
     <tabbar>
+      <tabbar-item selected link="/home">
+        <img slot="icon" class="icon-sprite-hq" src="../../assets/icon/hangqing_@2x.png">
+        <img slot="icon-active" class="icon-sprite-hq" src="../../assets/icon/dhangqing_@2x.png">
+        <span slot="label">行情</span>
+      </tabbar-item>
+      <tabbar-item >
+        <img slot="icon" class="icon-sprite-hq" src="../../assets/icon/zhibo_@2x.png">
+        <img slot="icon-active" class="icon-sprite-hq" src="../../assets/icon/dzhibo_@2x.png">
+        <span slot="label">直播</span>
+      </tabbar-item>
+      <tabbar-item >
+        <img slot="icon" class="icon-sprite-hq" src="../../assets/icon/jiaoyi_@2x.png">
+        <img slot="icon-active" class="icon-sprite-hq" src="../../assets/icon/djiaoyi_@2x.png">        
+        <span slot="label">交易</span>
+      </tabbar-item>
       <tabbar-item>
-        <img slot="icon" src="../assets/demo/icon_nav_button.png">
-        <span slot="label">Wechat</span>
-      </tabbar-item>
-      <tabbar-item show-dot>
-        <img slot="icon" src="../assets/demo/icon_nav_msg.png">
-        <span slot="label">Message</span>
-      </tabbar-item>
-      <tabbar-item selected link="/component/demo">
-        <img slot="icon" src="../assets/demo/icon_nav_article.png">
-        <span slot="label">Explore</span>
-      </tabbar-item>
-      <tabbar-item badge="2">
-        <img slot="icon" src="../assets/demo/icon_nav_cell.png">
-        <span slot="label">News</span>
+        <img slot="icon" class="icon-sprite-hq" src="../../assets/icon/zichan_@2x.png">
+        <img slot="icon-active" class="icon-sprite-hq" src="../../assets/icon/dzichan_@2x.png">        
+        <span slot="label">资产</span>
       </tabbar-item>
     </tabbar>
   </div>
 </template>
 
 <script>
-import { Tabbar, TabbarItem, Group, Cell } from 'vux'
+import { Tabbar, TabbarItem } from "vux";
 
 export default {
   components: {
     Tabbar,
-    TabbarItem,
-    Group,
-    Cell
+    TabbarItem
+  }
+};
+</script>
+
+<style lang="less">
+@import "../../style/mixin";
+.weui-tabbar {
+  background-color: #fff !important;
+  .weui-bar__item_on .weui-tabbar__label {
+    color: @red !important;
   }
 }
-</script>
+</style>
