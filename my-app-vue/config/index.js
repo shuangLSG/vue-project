@@ -10,14 +10,14 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    // 例如将'localhost:8080/web/wyb/xxx'代理到'http://web.bfy100.com/web/wyb/xxx'
+    // 例如将'localhost:8080/api/wyb/xxx'代理到'http://web.bfy100.com/web/wyb/xxx'
     proxyTable: {
       '/api': {// 匹配代理地址
-        target: 'http://web.bfy100.com/', // 接口的域名
+        target: 'http://web.bfy100.com/web', // 接口的域名
         // secure: false,  // https接口配置参数
         changeOrigin: true, // 接口跨域参数配置
-        pathRewrite: { //如果本身的接口地址就有 '/web' 这种通用前缀，就可以用 pathRewrite 删掉
-          '^/api': '/web'
+        pathRewrite: { //如果本身的接口地址就有 '/api' 这种通用前缀，就可以用 pathRewrite 删掉
+          '^/api': ''
         }
       }
     },

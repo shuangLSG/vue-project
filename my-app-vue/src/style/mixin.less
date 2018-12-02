@@ -1,6 +1,8 @@
 
 @images:'../assets';
 @red:#f64d4c;
+@green:#2abc4e;
+
 
 .cl{
     position: absolute;
@@ -9,4 +11,12 @@
   left: 0;
   overflow: hidden;
   width: 100%;
+}
+.sc(@size, @color){
+	font-size: @size;
+	color: @color;
+}
+
+.font(@size, @line-height) {  
+	font: @ize/@line-height SFU DIN MitAlt;
 }
