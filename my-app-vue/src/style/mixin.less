@@ -2,21 +2,57 @@
 @images:'../assets';
 @red:#f64d4c;
 @green:#2abc4e;
+@blue:#1e90ff;
+@gray:#b2b2b2;
 
+
+.sc(@size, @color){
+	font-size: @size;
+	color: @color;
+}
+
+.font-number(@size, @line-height) {  
+	font: @size/@line-height SFU DIN MitAlt;
+}
 
 .cl{
-    position: absolute;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   overflow: hidden;
   width: 100%;
 }
-.sc(@size, @color){
-	font-size: @size;
-	color: @color;
+.text-center{
+  text-align: center;
+}
+.flex-v{
+  flex-direction: column;
+}
+.flex-v,.flex-h,.flex-content-h{
+  display: flex;
+}
+.flex-content-h(@content:center){
+  justify-content:@content;
 }
 
-.font(@size, @line-height) {  
-	font: @ize/@line-height SFU DIN MitAlt;
+
+
+
+.right-arrow-box(@top:0,@right:0){
+  position: absolute !important;
+  top: @top;
+  margin-top: -4px;
+  right: @right;
+}
+.right-arrow(){
+  content: " ";
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  border-width: 2px 2px 0 0;
+  border-color: #C8C8CD;
+  border-style: solid;
+  -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
 }

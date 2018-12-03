@@ -3,7 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')
-
+const incereseList = r => require.ensure([], () => r(require('../page/incereseList/incereseList')), 'incereseList')
 
 Vue.use(VueRouter)
 
@@ -17,6 +17,9 @@ export default new VueRouter({
     }, {
       path: '/home',
       component: home
+    },{
+      path:'/incereseList',
+      component:incereseList
     }]
   }]
 })

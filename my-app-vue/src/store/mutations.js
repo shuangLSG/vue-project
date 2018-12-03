@@ -1,6 +1,7 @@
 import {
 	RECORD_USERINFO,
 	GET_USERINFO,
+	RECORD_CODE
 } from './mutation-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -22,7 +23,8 @@ export default {
 			state.userInfo =null;
 		}
 	},
-
-	
-
+	// 商品code
+	[RECORD_CODE](state, code) {
+		state.code =code;
+	},
 }
