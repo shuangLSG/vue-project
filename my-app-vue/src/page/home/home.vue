@@ -1,15 +1,16 @@
 <template>
  <div class="home-container">
+   <!-- 顶部商品展示 -->
   <div class="top-swiper">
     <swiper  height="2.8rem" dots-class="ctm-swiper-indicator" dots-position="center">
      <swiper-item v-for="(swiper,i) in topHQData" :key="i" class="swiper-slide">
         <router-link :to="{path:'/market',query:{code:item.code}}" v-for="(item,index) in swiper" :key="index" class="swiper-item">
-          <section :class="item.diff_rate>0?'font_red':'font_success'">
-              <img v-if="item.diff_rate>0" class="arrow" src="../../assets/icon/zf.png">
-              <img v-else class="arrow" src="../../assets/icon/df.png">
+          <section :class="fontStyle(item.diff_rate)">
+              <!-- <img v-if="item.diff_rate>0" class="arrow" src="../../static/icon/zf.png">
+              <img v-else class="arrow" src="../../static/icon/df.png"> -->
               <span>{{item.nowPrice}}</span>
           </section>
-          <span :class="item.diff_rate>0?'font_red':'font_success'">{{item.diff_money}}  {{item.diff_rate}}%</span>
+          <span :class="fontStyle(item.diff_rate)">{{item.diff_money}}  {{item.diff_rate}}%</span>
           <span>{{item.name}}</span>
         </router-link>
      </swiper-item>
@@ -24,17 +25,16 @@
     <grid :cols="3" :show-lr-borders="false">
       <grid-item v-for="(item,i) in hotHQData" :key="i" @onItemClick="goOrder(item.code)">
           <span>{{item.name}}</span>
-          <span :class="item.diff_rate>0?'font_red':'font_success'">{{item.nowPrice}}</span>
-          <span :class="item.diff_rate>0?'font_red':'font_success'">{{item.diff_money}}  {{item.diff_rate}}%</span>
+          <span :class="fontStyle(item.diff_rate)">{{item.nowPrice}}</span>
+          <span :class="fontStyle(item.diff_rate)">{{item.diff_money}}  {{item.diff_rate}}%</span>
       </grid-item>
     </grid>
   </div>
+  <!-- 商品涨幅榜  -->
   <div class="zf-goods">
     <group label-width="5em">
       <group-title slot="title">商品涨幅榜 
-        <router-link :to="'/incereseList'">
-          <span class="link"></span>
-        </router-link>
+        <router-link :to="'/incereseList'"><span class="link"></span></router-link>
       </group-title>
       <cell v-for="(item,i) in zfData" :key="i" title="default" primary="content">
         <div slot="title" class="flex-v">
@@ -43,7 +43,7 @@
         </div>
         <div class="ctm-ft-content">
           <span>{{item.nowPrice}}</span>
-          <span :class="item.diff_rate>0?'font_red':'font_success'">{{item.diff_rate}}%</span>
+          <span :class="fontStyle(item.diff_rate)">{{item.diff_rate}}%</span>
         </div>
       </cell>
    </group>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { imgBaseUrl } from "@/config/env";
+import { imgBaseUrl } from "../../config/env";
 import {
   Swiper,
   SwiperItem,
@@ -61,10 +61,10 @@ import {
   GridItem,
   GroupTitle,
   Group,
-  Cell
+  Cell 
 } from "vux";
-import footGuide from "@/components/footer/footGuide";
-import { hangqing, getBanner, getZF } from "@/service/getData.js";
+import footGuide from "../../components/footer/footGuide";
+import { hangqing, getBanner, getZF } from "../../service/getData.js";
 
 export default {
   name: "home",
@@ -90,6 +90,15 @@ export default {
     Group,
     Cell
   },
+  computed: {
+    fontStyle() {
+      return function(diff_rate) {
+        return diff_rate == 0
+          ? ""
+          : diff_rate > 0 ? "font_red" : "font_success";
+      };
+    }
+  },
   methods: {
     async initData() {
       // 顶部商品
@@ -103,7 +112,7 @@ export default {
       let hotmsg = await hangqing("ZC0,I0,AP0,MA0,RU0,TA0");
       this.hotHQData = hotmsg.d;
 
-      let zfmsg = await getZF();
+      let zfmsg = await getZF(8);
       this.zfData = zfmsg.d;
     },
     fromatTopData(data) {
@@ -125,7 +134,7 @@ export default {
 .home-container {
   .cl();
   padding-top: 0.8rem;
-  background: url(../../assets/background_@2x.png) no-repeat center;
+  background: url(../../../static/img/background_@2x.png) no-repeat center;
   background-size: 100%;
   .top-swiper {
     .swiper-slide {
@@ -184,6 +193,7 @@ export default {
     }
     .weui-grid {
       .text-center();
+      text-decoration: none;
       &:nth-child(-n + 3) {
         padding-top: 0;
         padding-bottom: 0.4rem;
@@ -197,7 +207,7 @@ export default {
           border: none;
         }
       }
-      span:first-child {
+      span {
         .sc(0.42rem,#000);
       }
       span:nth-of-type(2) {

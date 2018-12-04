@@ -16,6 +16,6 @@ export const getBanner = () => fetch('/api/wyb/bannerquery', {},'POST');
 /**
  * 获取涨幅榜
  */
-export const getZF = () => fetch('/api/wyb/qhchangf', {
-	PageSize: 8
+export const getZF = (size) => fetch('/api/wyb/qhchangf', {
+	PageSize: size
 },'POST');
