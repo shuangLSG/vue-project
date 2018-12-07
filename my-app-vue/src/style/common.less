@@ -1,37 +1,36 @@
-@import "mixin";
+
 @font-face {
     font-family: SFU DIN MitAlt;
     src: url("../../static/font/pictos-web.ttf");
 }
-.font_red{
- color:@red !important;
+
+.clearfix::before, .clearfix::after {
+    content: "";
+    height: 0;
+    line-height: 0;
+    display: block;
+    visibility: none;
+    clear: both;
+  }
+
+
+.fl{
+    float:left;
 }
-.font_success{
-    color:@green !important;
+.fr{
+    float:right;
 }
-.font_family{
-    font-family: SFU DIN MitAlt;
+.mag-top-4{
+    margin-top:0.4rem;
 }
-
-.cl{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    width: 100%;
-}
-.ctm-center{
-    text-align: center;
+.bg-white{
+    background-color:#fff !important;
 }
 
-
-
-
-
-
-
-
+  
+a{
+    color: initial;
+}
 
 
 

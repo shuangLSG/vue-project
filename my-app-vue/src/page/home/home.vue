@@ -95,7 +95,7 @@ export default {
       return function(diff_rate) {
         return diff_rate == 0
           ? ""
-          : diff_rate > 0 ? "font_red" : "font_success";
+          : diff_rate > 0 ? "font-red" : "font-success";
       };
     }
   },

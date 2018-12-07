@@ -14,7 +14,7 @@
             </cell>
         </group>
         <group label-width="5em" class="zf-goods">
-            <cell v-for="(item,i) in zfData" :key="i" title="default" primary="content">
+            <cell v-for="(item,i) in zfData" :key="i" :link="{path:'/market',query:{code:item.code}}" title="default" primary="content">
                 <div slot="title" class="flex-v">
                     <span>{{item.name}}</span>
                     <span class="font-gray">{{item.code}}</span>
@@ -32,10 +32,12 @@
 <script>
 import { Group, Cell } from "vux";
 import { getZF } from "../../service/getData.js";
+import { clearInterval, setInterval } from "timers";
 export default {
   data() {
     return {
-      zfData: [],
+     
+      zfData: null,
       nowPrice: {
         id: 1,
         type: "none"
@@ -44,7 +46,7 @@ export default {
         id: 2,
         type: "down"
       },
-      sort: "diff_rate",  // 当前排序方式
+      sort: "diff_rate", // 当前排序方式
       iconData: [
         {
           type: "none",
@@ -58,7 +60,8 @@ export default {
           type: "down",
           src: require("../../../static/img/icon/quote_down_icon.png")
         }
-      ]
+      ],
+      timer: null
     };
   },
   components: {
@@ -70,7 +73,7 @@ export default {
       return function(diff_rate) {
         return diff_rate == 0
           ? ""
-          : diff_rate > 0 ? "font_red" : "font_success";
+          : diff_rate > 0 ? "font-red" : "font-success";
       };
     },
     iconStyle() {
@@ -92,6 +95,17 @@ export default {
   },
   mounted() {
     this.initData();
+
+    this.$nextTick(function() {
+      var _this = this;
+      this.timer = setInterval(function() {
+        _this.sortFn();
+      }, 1000);
+    });
+  },
+  // 退出该页面后清除定时器
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
   methods: {
     async initData() {
@@ -113,26 +127,26 @@ export default {
       this.sortFn();
     },
 
-    sortFn(){
-        this.initData();
-        // 排序方向（从大到小、从小到大）
-        var direction=null;
-        const sort = this.sort;
-        if(sort =='nowPrice'){
-            direction = this.nowPrice.type
-        }else{
-            direction = this.diffRate.type
+    async sortFn() {
+      var msg = await getZF(0);
+      var data = msg.d;
+      // 根据排序方向（从大到小、从小到大）
+      var direction = null;
+      const sort = this.sort;
+      if (sort == "nowPrice") {
+        direction = this.nowPrice.type;
+      } else {
+        direction = this.diffRate.type;
+      }
+      this.zfData = data.sort(function(a, b) {
+        if (direction == "down") {
+          return b[sort] - a[sort];
+        } else {
+          return a[sort] - b[sort];
         }
-        this.zfData.sort(function(a,b){
-            if(direction=='down'){
-                return b[sort] -a[sort]
-            }else{
-                return a[sort] -b[sort]
-            }
-        })
+      });
     }
-  },
-  
+  }
 };
 </script>
 
@@ -158,8 +172,8 @@ export default {
   .weui-cells {
     background-color: #f5f5f5;
     font-size: 0.34rem;
-    .sort-item span.active{
-        color:@blue;
+    .sort-item span.active {
+      color: @blue;
     }
     img {
       margin-top: -0.06rem;
@@ -170,6 +184,9 @@ export default {
   }
 }
 .zf-goods {
+  .weui-cell_access .weui-cell__ft:after{
+    display: none;
+  }
   .flex-v {
     span:first-child {
       .sc(0.36rem,#000);

@@ -1,21 +1,62 @@
 
 @images:'../assets';
 @red:#f64d4c;
+@light-red:#ff6f52;
 @green:#2abc4e;
 @blue:#1e90ff;
+@dgray:#a3a3a3;
 @gray:#b2b2b2;
 @bg:#f5f5f5;
+@orange:#f0ad4e;
 
+// color
+.font-gray{
+  color:@gray !important;
+}
+.font-light-gray{
+  color:@dgray !important;
+}
+.font-red{
+  color:@red !important;
+}
+.font-blue{
+  color:@blue !important;
+}
+.font-success{
+  color:@green !important;
+}
+.bg-gray{
+  background-color:@bg !important;
+}
+
+// 字体大小、颜色
 .sc(@size, @color){
 	font-size: @size;
 	color: @color;
 }
 
+.wh(@width,@height){
+  width: @width;
+  height: @height;
+}
+// 字体大小、文字类型
+.font(@size, @line-height,@family:'Microsoft YaHei') {  
+	font: @size/@line-height @family;
+}
 .font-number(@size, @line-height) {  
 	font: @size/@line-height SFU DIN MitAlt;
 }
 
-.cl{
+// 圆角
+.radius(@radius){
+  border-radius:@radius;
+}
+
+
+
+
+// 满屏
+.cl,.pull-screen{
   position: absolute;
   top: 0;
   bottom: 0;
@@ -23,20 +64,31 @@
   overflow: hidden;
   width: 100%;
 }
+
+// 布局
+.float(@dct:left){
+  float: @dct;
+}
 .text-center{
   text-align: center;
+}
+.flex-v,.flex-h{
+  display: flex;
 }
 .flex-v{
   flex-direction: column;
 }
-.flex-v,.flex-h,.flex-content-h{
-  display: flex;
-}
+
 .flex-content-h(@content:center){
   justify-content:@content;
 }
 
-
+.flex-content-v(@content:center){
+  align-items:@content;
+}
+.flex-1{
+  flex:1;
+}
 
 
 .right-arrow-box(@top:0,@right:0){

@@ -1,0 +1,93 @@
+  .font-red span {
+    color: @red;
+  }
+  .font-success span {
+    color: @green;
+  }
+  .top-wrapper {
+    margin-top: 0.4rem;
+    margin-bottom: 0.3rem;
+    overflow: hidden;
+    padding: 0.2rem 0.7rem 0;
+    .text-center();
+    .title-box {
+      .float();
+      .name {
+        .sc(0.45rem,#000);
+      }
+      .state {
+        .sc(0.32rem,#a3a3a3);
+        margin-top: 0.18rem;
+      }
+    }
+  
+    .price {
+      .float();
+      position: relative;
+      margin-left: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      span:first-child {
+        .font-number(0.6rem,1);
+        font-weight: 700;
+        margin-bottom: 0.18rem;
+      }
+      img {
+        position: absolute;
+        top: 0.15rem;
+        width: 0.46rem;
+        height: auto;
+        right: -0.7rem;
+      }
+    }
+    .produce {
+      .float(right);
+      .sc(0.32rem,@blue);
+      padding: 0 0.2rem 0.2rem;
+    }
+  }
+  .details {
+    padding-top: 0.1rem;
+    .clearfix{
+        overflow: hidden;
+    }
+    li {
+      .float();
+      .text-center();
+      .sc(0.32rem,#a3a3a3);
+      width: 25%;
+      margin-top: 0.2rem;
+      span {
+        display: block;
+        color: #6d6d6d;
+        .font-number(0.38rem,1.6);
+      }
+    }
+  }
+  .action-box{
+      .flex-content-h(); 
+      margin: 0.6rem 0;
+      button{    
+        .sc(0.4rem,#fff);
+        height: 0.9rem;
+        margin: 0 0.5rem;
+      }
+      button:last-child{
+          margin-top:0;
+      }
+  }
+
+    .time-tabs,.list-box .flex-1{
+      .flex-content-h(space-around);
+    }
+    .time-tabs{
+      height: 1rem;
+      line-height: 1rem;
+      span.active{
+        color:#000;
+      }
+    }
+    .time-line{
+      .flex-content-h(space-between);
+    }

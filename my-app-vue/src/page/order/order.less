@@ -1,0 +1,133 @@
+.order-detail {
+    .weui-panel {
+      padding: 0 0.4rem;
+      &::before,
+      &:after{
+          border:none;
+      }
+    }
+    .title {
+      .text-center();
+      padding: 0.2rem;
+      font-size: 0.46rem;
+      span {
+        .font-number(0.44rem,1);
+        position: relative;
+        margin-left: 0.6rem;
+      }
+    }
+    .order-content {
+      .radius(0.1rem);
+      width: 9.4rem;
+      margin: 0.3rem auto;
+      box-shadow: 0 0 20px rgba(178, 178, 178, 0.2);
+  
+      .weui-panel__hd {
+        .font(0.4rem,1.4);
+        position: relative;
+        color: #000;
+        &::before {
+          content: " ";
+          position: absolute;
+          left: 0;
+          height: 12px;
+          transform: translateY(6px);
+          border-left: 3px solid @red;
+        }
+        &:after {
+          border: none;
+        }
+      }
+      .card-content {
+        .flex-content-h(space-between);
+        .action-btn {
+          .radius(0.1rem);
+          .sc(0.42rem,#B2B2B2);
+          width: 2.3rem;
+          margin: 0;
+          background-color: #fff;
+        }
+        .action-btn.active {
+          background-image: linear-gradient(to right, #ff8a00 0%, #ff5932 100%);
+          color: #fff !important;
+          border-color: #ff7139 !important;
+        }
+
+        .card-bd{
+            span{
+                color:@light-red;
+                .font-number(0.82rem,1);              
+            }
+        }
+        .flex-box{
+            padding: 0.4rem 0;
+            margin-top: 0.1rem;
+            span:first-child{
+                .font-number(0.4rem,1.6);
+                display: block;
+            }
+        }
+      }
+    }
+  }
+  .actions-wrapper{
+    width: 9.4rem;
+    margin: 0.3rem auto;
+    .action{
+        .flex-content-v();
+          padding: 0.3rem 0;
+        .action-label{
+            min-width: 1rem;
+            font-size: 0.36rem;
+        }
+        .weui-btn.action-btn{
+            .wh(4rem,0.9rem);   
+            font-size: 0.38rem;
+            box-shadow: 0 0 25px rgba(178,178,178,0.3);
+            &.weui-btn_plain-default{
+                color:#b2b2b2;
+                border-color: transparent;
+            }
+        }
+        .weui-btn + .weui-btn{
+            margin-top: 0;
+        }    
+    }
+    p{
+      margin-left: 0.2rem;
+    }
+  }
+  .weui-cell_switch{
+    label{
+      width: auto !important;
+      font-size: 0.4rem;
+      span>span{
+        .sc(0.32rem,@gray);
+      }
+    }
+  }
+  .tips{
+    .vux-x-icon {
+      width: 0.5rem;
+      display: inline-block;
+      vertical-align: middle;
+      fill: @blue;
+    }
+  }
+  .triangle-up:before,
+  .triangle-down:before {
+    content: "";
+    position: absolute;
+    right: -40%;
+    width: 0;
+    height: 0;
+    top: 41%;
+    border-left: 0.12rem solid transparent;
+    border-right: 0.12rem solid transparent;
+  }
+  .triangle-down:before {
+    border-top: 0.2rem solid @green;
+  }
+  .triangle-up:before {
+    border-bottom: 0.2rem solid @red;
+  }
