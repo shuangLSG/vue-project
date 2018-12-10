@@ -1,7 +1,9 @@
 import {
 	RECORD_USERINFO,
 	GET_USERINFO,
-	RECORD_CODE
+	RECORD_CODE,
+	SAVE_COUPON,
+	REMOVE_COUPON
 } from './mutation-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -27,4 +29,13 @@ export default {
 	[RECORD_CODE](state, code) {
 		state.code =code;
 	},
+
+	//保存选中优惠券信息
+	[SAVE_COUPON](state,coupon){
+		state.coupon=coupon;
+	},
+	// 删除优惠券信息
+	[REMOVE_COUPON](state){
+		state.coupon=null;
+	}
 }

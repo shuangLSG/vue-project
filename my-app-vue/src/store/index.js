@@ -9,7 +9,8 @@ Vue.use(Vuex)
 const state = {
 	userInfo: null, //用户信息
 	login: true,//是否登录
-	code:''
+	code:'',
+	coupon:null
 }
 
 export default new Vuex.Store({

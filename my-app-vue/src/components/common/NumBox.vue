@@ -193,6 +193,8 @@ export default {
           this.disabledReduce = true;
         }
       }
+
+      this.$emit('on-change', newValue);
     }
   }
 };

@@ -56,7 +56,8 @@
         .card-bd{
             span{
                 color:@light-red;
-                .font-number(0.82rem,1);              
+                .font-number(0.82rem,1); 
+                margin-right: 0.1rem;             
             }
         }
         .flex-box{
@@ -107,11 +108,34 @@
     }
   }
   .tips{
+    padding: 0.2rem;
     .vux-x-icon {
       width: 0.5rem;
       display: inline-block;
       vertical-align: middle;
       fill: @blue;
+    }
+    .weui-icon{
+      &.weui-icon-success:before{
+        color:@blue;
+      }
+      font-size: 0.4rem;
+      vertical-align: middle;
+    }
+  }
+  .weui-tabbar{
+    .flex-content-h(space-between);
+    .flex-content-v();
+    .total-box{
+      padding-left: 0.36rem;
+      .font-light-red{    font-size: 0.56rem;}      
+    }
+    .weui-btn{
+      border-radius: 0;
+      height: 1.3rem;
+      width: 2.5rem;
+      font-size: 0.4rem;
+      margin: 0;
     }
   }
   .triangle-up:before,

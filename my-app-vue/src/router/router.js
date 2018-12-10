@@ -8,6 +8,7 @@ const market = r => require.ensure([], () => r(require('../page/market/market'))
 const login = r => require.ensure([], () => r(require('../page/login/login')), 'login')
 const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
 const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
+const trade = r => require.ensure([], () => r(require('../page/trade/trade')), 'trade')
 
 
 Vue.use(VueRouter)
@@ -38,6 +39,9 @@ export default new VueRouter({
     },{
       path:'/coupon',
       component:coupon
+    },{
+      path:'/trade',
+      component:trade
     }]
   }]
 })

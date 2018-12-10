@@ -11,7 +11,7 @@
         <img slot="icon-active" class="icon-sprite-hq" :src="iconData[3].src">
         <span slot="label">直播</span>
       </tabbar-item>
-      <tabbar-item >
+      <tabbar-item link="/trade">
         <img slot="icon" class="icon-sprite-hq" :src="iconData[4].src">
         <img slot="icon-active" class="icon-sprite-hq" :src="iconData[5].src">        
         <span slot="label">交易</span>

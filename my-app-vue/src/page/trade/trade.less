@@ -1,0 +1,98 @@
+.trade-container {
+    padding-top: 1rem;
+    padding-bottom: 1.4rem;
+
+    background-image: url(../../../static/img/trade.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index:-1;
+}
+
+.top-content{
+    .text-center();
+        font-size:0.48rem;
+    .money span{
+        .font-number(1.2rem,1);
+    }
+}
+
+.position-wrapper{
+    margin: 0 0.4rem;
+    margin-top: 1rem;
+    border-radius: 0.2rem;
+    min-height: 86%;
+    .weui-cells:before,
+    .weui-cells:after{
+        border:none;
+    }
+    .weui-cells__title{
+        padding-top: 0.3rem;
+        font-size: 0.32rem;
+    }
+    .lists-container{
+        .weui-cells{
+            background-color: #f2f2f2;
+            padding-bottom: 1px;
+        }
+        li{
+            padding: 0.3rem 0.4rem;
+            margin-bottom: 0.12rem;
+            background-color: #fff;
+            .vux-badge{
+                .radius(2px);
+            }
+            span:nth-of-type(2) {
+                font-size: 0.4rem;
+                letter-spacing: 1px;
+            }
+            p{
+                .sc(0.3rem,#b2b2b2);
+                line-height: 1.8;
+            }
+            .weui-btn{
+                .font(0.34rem,1);
+                .radius(2px);
+                height: 0.72rem;
+                padding: 0.2rem;
+                min-width: 1.62rem;
+                margin-top: 0.2rem;
+            }
+            .flex-h{
+                .position-bd-item-box{
+                    .flex-h{
+                        .flex-content-h(space-between);
+                    }
+                }
+                .position-bd-item-box:first-child {
+                    width: 67%;
+                    padding-right: 0.4rem;
+                    border-right: 1px solid #f2f2f2;
+                    box-sizing: border-box;
+                    p{
+                        .text-center();
+                        &:first-child{
+                            .font-number(0.44rem,1.2);
+                            color:#000;
+                        }
+                    }
+                }
+                .position-bd-item-box:last-child {
+                    padding-left: 5%;
+                    .flex-h{
+                        .flex-content-v(flex-end);
+                        img{
+                            width: 0.36rem;    
+                        }
+                    }
+                    .position-bd-right span {
+                        color:#000;
+                        .font-number(0.44rem,1.2);
+                    }
+                }
+            }
+        }
+    }
+    .empty{
+        img{width: 2.8rem;}
+    }
+}

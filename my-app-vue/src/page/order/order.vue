@@ -41,21 +41,21 @@
                 <div class="action flex-h">
                     <span class="action-label">手数</span>
                     <section>
-                        <num-box :min='1' :max="10" :step="1"></num-box>
+                        <num-box :min='1' :max="10" :step="1" @on-change="changeStock" v-model="curStock"></num-box>
                     </section>
                     <p class="font-gray">最大可交易{{oneGood.maxStock}}手</p>
                 </div>
                 <div class="action flex-h">
                     <span class="action-label">止盈</span>
                     <section>
-                        <num-box :data="stopprofit" setDefault="无" unit="%"></num-box>
+                        <num-box :data="stopprofit" setDefault="无" unit="%" @on-change="changeStopProfit" v-model="curStopProfit"></num-box>
                     </section>
                     <p class="font-gray">范围{{stopprofit[0]}}-{{stopprofit[stopprofit.length-1]}}%</p>
                 </div>
                 <div class="action flex-h">
                     <span class="action-label">止损</span>
                     <section>
-                        <num-box :data="stoploss"></num-box>
+                        <num-box :data="stoploss" @on-change="changeStopLoss" v-model="curStopLoss"></num-box>
                     </section>
                     <p class="font-gray">范围{{stoploss[0]}}-{{stoploss[stoploss.length-1]}}%</p>
                 </div>
@@ -68,17 +68,36 @@
             <check-icon :value.sync="isAgree"></check-icon>
             我已阅读协议并同意相关合同条款 查看 <span class="font-blue">《策略交易协议》</span>
         </div>
+
+        <tabbar class="bg-white">
+            <div class="total-box">
+                <span class="font-light-red">{{total}}</span>
+                <span class="font-gray">(含策略服务费{{totalSxf}})</span> 
+            </div>
+            <x-button type="warn"  @click.native="create()" class="action-btn fr">确认建仓</x-button>                
+        </tabbar>
     </div>
 </template>
 
 <script>
-import { Card, XButton, Flexbox, FlexboxItem, Cell, XSwitch,CheckIcon } from "vux";
+import {
+  Card,
+  XButton,
+  Flexbox,
+  FlexboxItem,
+  Cell,
+  XSwitch,
+  CheckIcon,
+  Tabbar
+} from "vux";
 import NumBox from "../../components/common/NumBox";
 import {
   hangqing,
   getGoodsList,
-  getCouponList
+  getCouponList,
+  createTrade
 } from "../../service/getData.js";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -90,14 +109,22 @@ export default {
       oneGood: [],
       stopprofit: [], // 页面一开始异步oneGood还没有值
       stoploss: [],
-      curIndex: 0,
+      curIndex: 0, //某种规格的索引
       isUseCoupon: false,
-      isAgree:true
+      isAgree: true,
+
+      total: 0, //总金额
+      totalSxf: 0, //总手续费
+      curStock: 1, // 当前手数
+      couponPrice: 0, //优惠券金额
+      curStopLoss: "无", // 当前止损
+      curStopProfit: "无" //当前止盈
     };
   },
   components: {
     Cell,
     Card,
+    Tabbar,
     CheckIcon,
     XSwitch,
     NumBox,
@@ -112,20 +139,26 @@ export default {
   mounted() {
     this.initData();
   },
+  computed: {
+    ...mapState(["coupon"])
+  },
   methods: {
+    ...mapMutations(["REMOVE_COUPON"]),
     async initData() {
       let hqmsg = await hangqing(this.code);
       this.hqData = hqmsg.d[0];
 
-      let couponmsg = await getCouponList();
-      this.couponData = couponmsg.d;
-
       let glmsg = await getGoodsList();
       this.curGoods = glmsg.d[this.code];
       this.oneGood = this.curGoods[this.curIndex];
-
+      // 止盈、止损
       this.stoploss = this.oneGood.stoploss;
       this.stopprofit = this.oneGood.stopprofit;
+      // 初始化当前总金额
+      this.setTotal(this.curStock);
+
+      let couponmsg = await getCouponList();
+      this.couponData = couponmsg.d;
     },
     selectSpec(index) {
       this.curIndex = index;
@@ -134,10 +167,65 @@ export default {
     selectType(type) {
       this.type = type;
     },
-    toCoupon() {
-    //   if (this.isUseCoupon) {
-    //     this.$router.push({ path: "/coupon" });
-    //   }
+    toCoupon(newVal) {
+      if (newVal) {
+        this.$router.push({ path: "/coupon" });
+      }
+    },
+    changeStock(val) {
+      this.setTotal(val);
+    },
+    changeStopProfit(val) {
+      this.curStopProfit = val;
+    },
+    changeStopLoss(val) {
+      this.curStopLoss = val;
+    },
+    setTotal(handVal) {
+      let sxf = 0,
+        couponPrice = 0;
+      if (this.coupon) {
+        couponPrice = this.coupon.price;
+      }
+      //总策略服务费
+      if (this.isUseCoupon && couponPrice) {
+        sxf = this.oneGood.priceSxf * handVal - couponPrice;
+        this.totalSxf = sxf > 0 ? sxf : 0;
+      } else {
+        this.totalSxf = this.oneGood.priceSxf * handVal;
+      }
+      this.total = this.oneGood.price * handVal + this.totalSxf; // 减去优惠券
+    },
+    async create() {
+      let toprate =
+          this.curStopProfit == "无" ? 0 : parseInt(this.curStopProfit) / 100,
+        lowrate =
+          this.curStopLoss == "无" ? 0 : parseInt(this.curStopLoss) / 100,
+        flag = this.isUseCoupon ? 1 : 0,
+        type = this.type == "buy" ? 1 : 2,
+        couponids = this.coupon ? this.coupon.id : "";
+
+      let msg = await createTrade(
+        this.oneGood.id,
+        this.curStock,
+        type,
+        toprate,
+        lowrate,
+        flag,
+        couponids
+      );
+      if (msg.s == 200) {
+        this.$vux.toast.text("正在建仓...", "bottom");
+        this.REMOVE_COUPON();
+        THIS.$router.push({path:'/trade'});
+      } else {
+        this.$vux.toast.text(mag.d);
+      }
+    }
+  },
+  watch: {
+    oneGood(newVal) {
+      this.setTotal(this.curStock);
     }
   }
 };
