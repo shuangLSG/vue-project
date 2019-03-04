@@ -6,8 +6,8 @@
      <swiper-item v-for="(swiper,i) in topHQData" :key="i" class="swiper-slide">
         <router-link :to="{path:'/market',query:{code:item.code}}" v-for="(item,index) in swiper" :key="index" class="swiper-item">
           <section :class="fontStyle(item.diff_rate)">
-              <!-- <img v-if="item.diff_rate>0" class="arrow" src="../../static/icon/zf.png">
-              <img v-else class="arrow" src="../../static/icon/df.png"> -->
+              <img v-if="item.diff_rate>0" class="arrow" src="../../../static/img/icon/zf.png">
+              <img v-else class="arrow" src="../../../static/img/icon/df.png">
               <span>{{item.nowPrice}}</span>
           </section>
           <span :class="fontStyle(item.diff_rate)">{{item.diff_money}}  {{item.diff_rate}}%</span>
@@ -23,7 +23,7 @@
   <div class="hot-goods">
     <group-title>热门交易品种</group-title>
     <grid :cols="3" :show-lr-borders="false">
-      <grid-item v-for="(item,i) in hotHQData" :key="i" @onItemClick="goOrder(item.code)">
+      <grid-item v-for="(item,i) in hotHQData" :key="i" @on-item-click="goMarket(item.code)">
           <span>{{item.name}}</span>
           <span :class="fontStyle(item.diff_rate)">{{item.nowPrice}}</span>
           <span :class="fontStyle(item.diff_rate)">{{item.diff_money}}  {{item.diff_rate}}%</span>
@@ -36,7 +36,7 @@
       <group-title slot="title">商品涨幅榜 
         <router-link :to="'/incereseList'"><span class="link"></span></router-link>
       </group-title>
-      <cell v-for="(item,i) in zfData" :key="i" title="default" primary="content">
+      <cell v-for="(item,i) in zfData" :key="i"  @click.native="goMarket(item.code)" title="default" primary="content">
         <div slot="title" class="flex-v">
           <span>{{item.name}}</span>
           <span class="font-gray">{{item.code}}</span>
@@ -65,6 +65,7 @@ import {
 } from "vux";
 import footGuide from "../../components/footer/footGuide";
 import { hangqing, getBanner, getZF } from "../../service/getData.js";
+import { clearInterval, setInterval } from "timers";
 
 export default {
   name: "home",
@@ -74,11 +75,23 @@ export default {
       bannerData: [],
       hotHQData: [],
       zfData: [],
+      timer:null,
       imgBaseUrl
     };
   },
   mounted() {
     this.initData();
+    this.getBannerData();
+
+    // this.$nextTick(function() {
+    //   var _this = this;
+    //   this.timer = setInterval(function() {
+    //     _this.initData();
+    //   }, 1000);
+    // });
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
   components: {
     footGuide,
@@ -105,15 +118,16 @@ export default {
       let topHQ = await hangqing("SC0,RB0,J0,AU0,AG0,CU0");
       this.topHQData = this.fromatTopData(topHQ.d);
 
-      let msg = await getBanner();
-      this.bannerData = msg.d.list;
-
       // 热门商品
       let hotmsg = await hangqing("ZC0,I0,AP0,MA0,RU0,TA0");
       this.hotHQData = hotmsg.d;
 
       let zfmsg = await getZF(8);
       this.zfData = zfmsg.d;
+    },
+    async getBannerData(){
+      let msg = await getBanner();
+      this.bannerData = msg.d.list;
     },
     fromatTopData(data) {
       var result = [];
@@ -122,7 +136,7 @@ export default {
       }
       return result;
     },
-    goOrder(code) {
+    goMarket(code) {
       this.$router.push({ path: "/market", query: { code: code } });
     }
   }

@@ -81,12 +81,12 @@ export default {
   },
   mounted() {
     this.initData();
-    this.$nextTick(function() {
-      var _this = this;
-      this.timer = setInterval(function() {
-        _this.initData();
-      }, 1000);
-    });
+    // this.$nextTick(function() {
+    //   var _this = this;
+    //   this.timer = setInterval(function() {
+    //     _this.initData();
+    //   }, 1000);
+    // });
   },
   // 退出该页面后清除定时器
   beforeDestroy() {

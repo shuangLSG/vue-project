@@ -3,7 +3,7 @@
         <div class="min-wrapper bg-white">
             <section class="order-detail">
                 <section class="title">
-                    {{hqData.name}}<span class="font-success triangle-down">3389</span>
+                    {{hqData.name}}<span :class="'curQHStyle'">{{hqData.nowPrice}}</span>
                 </section>
                 <section class="order-content">
                     <card :header="{title:'选择策略本金规格'}">
@@ -98,6 +98,8 @@ import {
   createTrade
 } from "../../service/getData.js";
 import { mapState, mapMutations } from "vuex";
+import { clearInterval, setInterval } from "timers";
+
 export default {
   data() {
     return {
@@ -112,7 +114,9 @@ export default {
       curIndex: 0, //某种规格的索引
       isUseCoupon: false,
       isAgree: true,
+      timer: null,
 
+      prevPrice: null, //页面初始化，使用昨收价作为参考，之后使用当前价作参考
       total: 0, //总金额
       totalSxf: 0, //总手续费
       curStock: 1, // 当前手数
@@ -138,15 +142,35 @@ export default {
   },
   mounted() {
     this.initData();
+
+    this.$nextTick(function() {
+      var _this = this;
+      this.timer = setInterval(function() {
+        _this.refreshData();
+      }, 1000);
+    });
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
   computed: {
-    ...mapState(["coupon"])
+    ...mapState(["coupon"]),
+    curQHStyle(){
+     let flag= this.prevPrice,
+      curPrice = this.hqData.nowPrice;
+       if (flag <= curPrice) {
+            return 'font-red triangle-up';
+        } else if (flag >= curPrice) {
+            return 'font-success triangle-down';
+        }
+    }
   },
   methods: {
     ...mapMutations(["REMOVE_COUPON"]),
     async initData() {
       let hqmsg = await hangqing(this.code);
       this.hqData = hqmsg.d[0];
+      this.prevPrice = this.hqData.yestodayClosePrice;
 
       let glmsg = await getGoodsList();
       this.curGoods = glmsg.d[this.code];
@@ -154,11 +178,17 @@ export default {
       // 止盈、止损
       this.stoploss = this.oneGood.stoploss;
       this.stopprofit = this.oneGood.stopprofit;
+
       // 初始化当前总金额
       this.setTotal(this.curStock);
 
       let couponmsg = await getCouponList();
       this.couponData = couponmsg.d;
+    },
+    async refreshData() {
+      let hqmsg = await hangqing(this.code);
+      this.hqData = hqmsg.d[0];
+      // this.prevPrice = this.hqData.nowPrice;
     },
     selectSpec(index) {
       this.curIndex = index;
@@ -217,7 +247,7 @@ export default {
       if (msg.s == 200) {
         this.$vux.toast.text("正在建仓...", "bottom");
         this.REMOVE_COUPON();
-        THIS.$router.push({path:'/trade'});
+        THIS.$router.push({ path: "/trade" });
       } else {
         this.$vux.toast.text(mag.d);
       }
@@ -226,6 +256,10 @@ export default {
   watch: {
     oneGood(newVal) {
       this.setTotal(this.curStock);
+    },
+    $route(to, from) {
+      this.code = this.$route.query.code;
+      this.type = this.$route.query.type;
     }
   }
 };
